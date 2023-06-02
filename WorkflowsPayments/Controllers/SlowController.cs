@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WorkflowsPayments.Controllers
 {
+    /// <summary>
+    /// https://github.com/elsa-workflows/elsa-core/discussions/871
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class SlowController : ControllerBase

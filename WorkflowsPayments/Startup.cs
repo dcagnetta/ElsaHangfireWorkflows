@@ -1,4 +1,5 @@
-﻿using Elsa.Activities.Email.Options;
+﻿using DocumentManagement.Core.Services;
+using Elsa.Activities.Email.Options;
 using Elsa.Activities.Http.Options;
 using Elsa.Persistence.EntityFramework.SqlServer;
 using Elsa.Server.Hangfire.Extensions;
@@ -6,6 +7,7 @@ using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder.Extensions;
+using WorkflowsPayments.Services;
 
 namespace WorkflowsPayments
 {
@@ -33,6 +35,14 @@ namespace WorkflowsPayments
 
             // Elsa (workflows engine).
             AddWorkflowServices(services, dbConnectionString);
+
+            services
+                .AddSingleton<IDocumentStore, InMemoryDocumentStore>()
+                .AddSingleton<ISystemClock, SystemClock>()
+                .AddSingleton<IFileStorage, FileStorage>()
+                .AddScoped<IDocumentService, DocumentService>()
+                ;
+
 
             /*services
                 .AddElsa(options => options
