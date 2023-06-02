@@ -35,10 +35,13 @@ namespace WorkflowsPayments
                     .AddHttpActivities()
 
                     .AddActivitiesFrom<ArchiveDocument>()
+                    //.AddActivitiesFrom<Program>()
+                    //.AddWorkflowsFrom<Program>())
 
                     // Workflows
                     .AddWorkflow<HelloWorldWorkflow>()
                     .AddWorkflow<VerySlowWorkflow>()
+                    .AddWorkflow<CompensableWorkflow>()
                 );
 
             // Get directory path to current assembly.

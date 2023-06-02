@@ -7,3 +7,5 @@
 *.user
 *.cs.orig
 *.orig
+WorkflowsPayments/bin
+WorkflowsPayments/obj
