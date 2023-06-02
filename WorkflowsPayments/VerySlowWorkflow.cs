@@ -12,24 +12,23 @@ namespace WorkflowsPayments
                 .WithVersion(1)
                 .StartWith(x =>
                 {
-                    Trace.WriteLine("Starting the very slow workflow");
-
+                    Console.WriteLine("Step 1: Starting the very slow workflow");
                 })
                 .Then(async x =>
                 {
-                    Trace.WriteLine("Delaying for 5 seconds...");
+                    Console.WriteLine("Step 2: Delaying for 5 seconds...");
                     await Task.Delay(new TimeSpan(0, 0, 5));
-                    Trace.WriteLine("Done with delay!");
+                    Console.WriteLine("Done with delay!");
                 })
                 .Then(async x =>
                 {
-                    Trace.WriteLine("Delaying for 5 seconds...");
+                    Console.WriteLine("Step 3: Delaying for 5 seconds...");
                     await Task.Delay(new TimeSpan(0, 0, 5));
-                    Trace.WriteLine("Done with delay!");
+                    Console.WriteLine("Done with delay!");
                 })
                 .Then(x =>
                 {
-                    Trace.WriteLine("All done!");
+                    Console.WriteLine("Step 4: All done!");
                 });
             ;
         }

@@ -1,7 +1,5 @@
 .vs
 .idea/*
-*.dll
-*.pdb
 
 **/bin
 **/obj

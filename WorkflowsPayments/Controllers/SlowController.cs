@@ -1,4 +1,6 @@
 
+using Elsa;
+using Elsa.Persistence;
 using Elsa.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +16,15 @@ namespace WorkflowsPayments.Controllers
     };
 
         private readonly ILogger<SlowController> _logger;
+        private readonly IWorkflowInstanceStore _store;
         private readonly IWorkflowDefinitionDispatcher _dispatcher;
 
-        public SlowController(ILogger<SlowController> logger, IWorkflowDefinitionDispatcher workflow)
+        public SlowController(ILogger<SlowController> logger,
+            IWorkflowInstanceStore store,
+            IWorkflowDefinitionDispatcher workflow)
         {
             _logger = logger;
+            _store = store;
             _dispatcher = workflow;
         }
 
@@ -35,6 +41,24 @@ namespace WorkflowsPayments.Controllers
             return Ok(new
             {
                 CorrelationId = correlationId
+            });
+        }
+
+        [HttpGet("{correlationId}")]
+        public async Task<IActionResult> Get(string correlationId)
+        {
+            var instance = await _store.FindByCorrelationIdAsync(correlationId);
+
+            if(instance == null)
+                return NotFound();
+
+            return Ok(new
+            {
+                WorkflowInstanceId = instance.Id,
+                instance.WorkflowStatus,
+                CreatedAt = instance.CreatedAt.ToDateTimeOffset(),
+                LastExecutedAt = instance.LastExecutedAt?.ToDateTimeOffset() ?? DateTimeOffset.MinValue,
+                CurrentActivity = instance.CurrentActivity == null ? "" : instance.CurrentActivity.ActivityId
             });
         }
     }
