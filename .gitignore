@@ -1,0 +1,10 @@
+.vs
+.idea/*
+
+
+**/bin
+**/obj
+**/.vs
+*.user
+*.cs.orig
+*.orig
