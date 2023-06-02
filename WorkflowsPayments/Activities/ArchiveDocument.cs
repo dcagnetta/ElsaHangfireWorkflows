@@ -38,6 +38,7 @@ namespace DocumentManagement.Workflows.Activities
 
             Document.Status = DocumentStatus.Archived;
             await _documentStore.SaveAsync(Document);
+            await Task.Delay(2000);
 
             _logger.LogInformation("****** Done Archiving....");
 

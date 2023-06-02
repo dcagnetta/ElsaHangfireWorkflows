@@ -47,6 +47,7 @@ namespace DocumentManagement.Workflows.Activities
             _logger.LogInformation("****** Reading Document....");
 
             var document = await _documentStore.GetAsync(DocumentId, context.CancellationToken);
+
             await _fileStorage.ReadAsync(document!.FileName, context.CancellationToken);
 
             Output = new DocumentFile(document, new MemoryStream());

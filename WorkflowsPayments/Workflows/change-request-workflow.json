@@ -15,7 +15,7 @@
     "data": {}
   },
   "isSingleton": false,
-  "persistenceBehavior": "WorkflowBurst",
+  "persistenceBehavior": "ActivityExecuted",
   "deleteCompletedInstances": false,
   "isPublished": true,
   "isLatest": true,
@@ -27,7 +27,7 @@
       "type": "GetDocument",
       "name": "GetDocument1",
       "displayName": "Get Document",
-      "persistWorkflow": false,
+      "persistWorkflow": true,
       "loadWorkflowContext": false,
       "saveWorkflowContext": false,
       "properties": [
@@ -50,7 +50,7 @@
       "activityId": "4e7115fe-aaef-4414-a5de-b1bf7b2eafa6",
       "type": "ZipFile",
       "displayName": "Zip File",
-      "persistWorkflow": false,
+      "persistWorkflow": true,
       "loadWorkflowContext": false,
       "saveWorkflowContext": false,
       "properties": [
@@ -83,7 +83,7 @@
       "activityId": "7616bfd2-5b40-407a-9acb-2dd8c1caab6f",
       "type": "ArchiveDocument",
       "displayName": "Archive Document",
-      "persistWorkflow": false,
+      "persistWorkflow": true,
       "loadWorkflowContext": false,
       "saveWorkflowContext": false,
       "properties": [
