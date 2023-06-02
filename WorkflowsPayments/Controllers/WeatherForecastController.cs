@@ -6,17 +6,17 @@ namespace WorkflowsPayments.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class SlowController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<SlowController> _logger;
         private readonly IWorkflowDefinitionDispatcher _dispatcher;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWorkflowDefinitionDispatcher workflow)
+        public SlowController(ILogger<SlowController> logger, IWorkflowDefinitionDispatcher workflow)
         {
             _logger = logger;
             _dispatcher = workflow;
