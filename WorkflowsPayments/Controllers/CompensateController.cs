@@ -31,22 +31,21 @@ namespace WorkflowsPayments.Controllers
         {
             var correlationId = Guid.NewGuid().ToString();
 
-            var result = await _starter.BuildAndStartWorkflowAsync<CompensableWorkflow>();
+            //var result = await _starter.BuildAndStartWorkflowAsync<CompensableWorkflow>();
 
             //await Task.Delay(5000);
 
             //var result1 = await _starter.BuildAndStartWorkflowAsync<FaultingWorkflow>();
 
-            /*
             await _dispatcher.DispatchAsync(
                 new ExecuteWorkflowDefinitionRequest(
                     WorkflowDefinitionId: nameof(CompensableWorkflow),
-                    CorrelationId: correlationId));*/
+                    CorrelationId: correlationId));
 
             return Ok(new
             {
                 CorrelationId = correlationId,
-                Result = result
+                //Result = result
             });
         }
     }
