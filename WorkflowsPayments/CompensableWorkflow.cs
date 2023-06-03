@@ -3,6 +3,7 @@ using Elsa.Activities.Compensation;
 using Elsa.Activities.Primitives;
 using Elsa.ActivityResults;
 using Elsa.Builders;
+using Elsa.Server.Api.Endpoints.WorkflowInstances;
 using Elsa.Services;
 using Elsa.Services.Models;
 
@@ -138,7 +139,9 @@ namespace WorkflowsPayments
         protected override IActivityExecutionResult OnExecute()
         {
             Console.WriteLine(">>>>>>>  Reserving flight");
-            return Done();
+
+            return Fault(new OperationCanceledException("Flight Cancelled"));
+            //return Done();
         }
     }
 
