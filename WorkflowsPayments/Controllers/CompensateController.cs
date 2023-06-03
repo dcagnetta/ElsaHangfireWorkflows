@@ -1,5 +1,6 @@
 using Elsa.Persistence;
 using Elsa.Services;
+using Elsa.Services.Workflows;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WorkflowsPayments.Controllers
@@ -12,18 +13,16 @@ namespace WorkflowsPayments.Controllers
     public class CompensateController : ControllerBase
     {
         
-        private readonly ILogger<CompensateController> _logger;
-        private readonly IWorkflowInstanceStore _store;
+
         private readonly IWorkflowDefinitionDispatcher _dispatcher;
+        private readonly IBuildsAndStartsWorkflow _starter;
 
         public CompensateController(
-            ILogger<CompensateController> logger,
-            IWorkflowInstanceStore store,
-            IWorkflowDefinitionDispatcher workflow)
+            IWorkflowDefinitionDispatcher workflow,
+            IBuildsAndStartsWorkflow starter)
         {
-            _logger = logger;
-            _store = store;
             _dispatcher = workflow;
+            _starter = starter;
         }
 
 
@@ -32,14 +31,22 @@ namespace WorkflowsPayments.Controllers
         {
             var correlationId = Guid.NewGuid().ToString();
 
+            var result = await _starter.BuildAndStartWorkflowAsync<CompensableWorkflow>();
+
+            await Task.Delay(5000);
+
+            var result1 = await _starter.BuildAndStartWorkflowAsync<FaultingWorkflow>();
+
+            /*
             await _dispatcher.DispatchAsync(
                 new ExecuteWorkflowDefinitionRequest(
                     WorkflowDefinitionId: nameof(CompensableWorkflow),
-                    CorrelationId: correlationId));
+                    CorrelationId: correlationId));*/
 
             return Ok(new
             {
-                CorrelationId = correlationId
+                CorrelationId = correlationId,
+                Result = result
             });
         }
     }

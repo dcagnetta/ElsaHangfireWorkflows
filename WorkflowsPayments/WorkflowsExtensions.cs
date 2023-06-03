@@ -34,14 +34,14 @@ namespace WorkflowsPayments
                     // Configure HTTP activities.
                     .AddHttpActivities()
 
-                    .AddActivitiesFrom<ArchiveDocument>()
-                    //.AddActivitiesFrom<Program>()
-                    //.AddWorkflowsFrom<Program>())
+                    //.AddActivitiesFrom<ArchiveDocument>()
+                    .AddActivitiesFrom<Program>()
+                    .AddWorkflowsFrom<Program>()
 
                     // Workflows
-                    .AddWorkflow<HelloWorldWorkflow>()
-                    .AddWorkflow<VerySlowWorkflow>()
-                    .AddWorkflow<CompensableWorkflow>()
+                    //.AddWorkflow<HelloWorldWorkflow>()
+                    //.AddWorkflow<VerySlowWorkflow>()
+                    //.AddWorkflow<CompensableWorkflow>()
                 );
 
             // Get directory path to current assembly.

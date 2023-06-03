@@ -8,6 +8,9 @@ using Elsa.Services.Models;
 
 namespace WorkflowsPayments
 {
+    /// <summary>
+    /// https://github.com/elsa-workflows/elsa-core/issues/2683
+    /// </summary>
     public class CompensableWorkflow : IWorkflow
     {
         public void Build(IWorkflowBuilder builder)
