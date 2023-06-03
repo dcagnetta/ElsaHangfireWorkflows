@@ -23,6 +23,7 @@ namespace WorkflowsPayments
                      * The Body : what work to be done within the scope of the compensable activity.
                      */
                     compensable.When(OutcomeNames.Body)
+                        .Then<ChooseFlight>()
                         .Then<ChargeCreditCard>()
                         .Then<ReserveFlight>();
 
@@ -45,7 +46,7 @@ namespace WorkflowsPayments
 
                     // Once the Body branch completes, the Done outcome is scheduled.
                     compensable.When(OutcomeNames.Done)
-                        .Then<TakeFlight>();
+                        .Then<ReviewFlight>();
 
                     // If an activity within the Body branch faults, the Cancel outcome is scheduled.
                     compensable.When(OutcomeNames.Cancel)
@@ -53,7 +54,7 @@ namespace WorkflowsPayments
 
                 }).WithName("Compensable1")
                 .Then<ManagerApproval>()
-                .Then<Fault>(a => a.WithMessage("******* Critical system error!"))
+                //.Then<Fault>(a => a.WithMessage("******* Critical system error!"))
                 .Then<PurchaseFlight>()
                 .Then<TakeFlight>()
                 .Then<Confirm>(a => a.WithCompensableActivityName("Compensable1"));
@@ -65,6 +66,24 @@ namespace WorkflowsPayments
         protected override IActivityExecutionResult OnExecute()
         {
             Console.WriteLine(">>>>>>>  Flight has been taken, no compensation possible");
+            return Done();
+        }
+    }
+
+    public class ChooseFlight : Activity
+    {
+        protected override IActivityExecutionResult OnExecute()
+        {
+            Console.WriteLine(">>>>>>>  Flight Chosen");
+            return Done();
+        }
+    }
+
+    public class ReviewFlight : Activity
+    {
+        protected override IActivityExecutionResult OnExecute()
+        {
+            Console.WriteLine(">>>>>>>  Reviewed flight. Thank you for flying with us! ");
             return Done();
         }
     }
