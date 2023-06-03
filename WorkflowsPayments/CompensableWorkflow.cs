@@ -19,20 +19,41 @@ namespace WorkflowsPayments
                 .WithWorkflowDefinitionId(nameof(CompensableWorkflow))
                 .StartWith<Compensable>(compensable =>
                 {
+                    /*
+                     * The Body : what work to be done within the scope of the compensable activity.
+                     */
                     compensable.When(OutcomeNames.Body)
                         .Then<ChargeCreditCard>()
                         .Then<ReserveFlight>();
 
+                    /*
+                     *If any activity causes an unhandled exception in the Done branch,
+                     * the Compensate outcome of the compensable activity will be scheduled,
+                     * allowing the workflow to undo actions as necessary.
+                     */
                     compensable.When(OutcomeNames.Compensate)
                         .Then<CancelFlight>()
                         .Then<CancelCreditCardCharges>();
 
+                    /*
+                     * For some scenarios, compensable activities should no longer allow to be compensated anymore.
+                     * To control this, the user should be able to explicitly confirm a compensable activity.
+                     * When this happens, the Confirm outcome will be scheduled, allowing the user to do any work that finalizes some state.
+                     */
                     compensable.When(OutcomeNames.Confirm)
                         .Then<ConfirmFlight>();
 
+                    // Once the Body branch completes, the Done outcome is scheduled.
+                    compensable.When(OutcomeNames.Done)
+                        .Then<TakeFlight>();
+
+                    // If an activity within the Body branch faults, the Cancel outcome is scheduled.
+                    compensable.When(OutcomeNames.Cancel)
+                        .Then<CancelFlight>();
+
                 }).WithName("Compensable1")
                 .Then<ManagerApproval>()
-                .Then<Fault>(a => a.WithMessage("Critical system error!"))
+                .Then<Fault>(a => a.WithMessage("******* Critical system error!"))
                 .Then<PurchaseFlight>()
                 .Then<TakeFlight>()
                 .Then<Confirm>(a => a.WithCompensableActivityName("Compensable1"));
@@ -43,7 +64,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Flight has been taken, no compensation possible");
+            Console.WriteLine(">>>>>>>  Flight has been taken, no compensation possible");
             return Done();
         }
     }
@@ -52,7 +73,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Ticket is purchased");
+            Console.WriteLine(">>>>>>>  Ticket is purchased");
             return Done();
         }
     }
@@ -61,7 +82,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Manager approval received");
+            Console.WriteLine(">>>>>>>  Manager approval received");
             return Done();
         }
     }
@@ -70,7 +91,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Confirming flight");
+            Console.WriteLine(">>>>>>>  Confirming flight");
             return Done();
         }
     }
@@ -79,7 +100,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Cancelling credit card charges");
+            Console.WriteLine(">>>>>>>  Cancelling credit card charges");
             return Done();
         }
     }
@@ -88,7 +109,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Cancelling flight");
+            Console.WriteLine(">>>>>>>  Cancelling flight");
             return Done();
         }
     }
@@ -97,7 +118,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Reserving flight");
+            Console.WriteLine(">>>>>>>  Reserving flight");
             return Done();
         }
     }
@@ -106,7 +127,7 @@ namespace WorkflowsPayments
     {
         protected override IActivityExecutionResult OnExecute()
         {
-            Console.WriteLine("Charging credit card for flight");
+            Console.WriteLine(">>>>>>>  Charging credit card for flight");
             return Done();
         }
     }

@@ -33,9 +33,9 @@ namespace WorkflowsPayments.Controllers
 
             var result = await _starter.BuildAndStartWorkflowAsync<CompensableWorkflow>();
 
-            await Task.Delay(5000);
+            //await Task.Delay(5000);
 
-            var result1 = await _starter.BuildAndStartWorkflowAsync<FaultingWorkflow>();
+            //var result1 = await _starter.BuildAndStartWorkflowAsync<FaultingWorkflow>();
 
             /*
             await _dispatcher.DispatchAsync(
