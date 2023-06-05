@@ -12,6 +12,7 @@ using Elsa.Providers.WorkflowStorage;
 using Elsa.Services;
 using Elsa.Services.Models;
 using Hangfire;
+using NetBox.Extensions;
 
 namespace DocumentManagement.Workflows.Activities
 {
@@ -58,11 +59,15 @@ namespace DocumentManagement.Workflows.Activities
         protected override async ValueTask<IActivityExecutionResult> OnExecuteAsync(ActivityExecutionContext context)
         {
             // Compute hash.
-            var bytes = File is Stream stream ? await stream.ReadBytesToEndAsync() : File is byte[] buffer ? buffer : throw new NotSupportedException();
+            //var bytes = File is Stream stream ? await stream.ReadBytesToEndAsync() : File is byte[] buffer ? buffer : throw new NotSupportedException();
+
+            var bytes = "Some Random String".Base64DecodeAsBytes();
             var fileSignature = ComputeSignature(bytes);
 
             // Schedule background work using Hangfire.
-            _backgroundJobClient.Enqueue(() => SubmitToBlockChainAsync(new UpdateBlockchainContext(context.WorkflowInstance.Id, context.ActivityId, fileSignature), CancellationToken.None));
+            _backgroundJobClient.Enqueue(() => 
+                SubmitToBlockChainAsync(new UpdateBlockchainContext(
+                    context.WorkflowInstance.Id, context.ActivityId, fileSignature), CancellationToken.None));
 
             // Suspend the workflow.
             return Suspend();

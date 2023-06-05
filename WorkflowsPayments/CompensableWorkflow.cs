@@ -1,11 +1,9 @@
-﻿using Elsa;
+﻿using DocumentManagement.Workflows.Activities;
+using Elsa;
 using Elsa.Activities.Compensation;
-using Elsa.Activities.Primitives;
 using Elsa.ActivityResults;
 using Elsa.Builders;
-using Elsa.Server.Api.Endpoints.WorkflowInstances;
 using Elsa.Services;
-using Elsa.Services.Models;
 
 namespace WorkflowsPayments
 {
@@ -26,6 +24,7 @@ namespace WorkflowsPayments
                     compensable.When(OutcomeNames.Body)
                         .Then<ChooseFlight>()
                         .Then<ChargeCreditCard>()
+                        .Then<UpdateBlockchain>()
                         .Then<ReserveFlight>();
 
                     /*
